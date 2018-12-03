@@ -1,0 +1,12 @@
+<div class="main-board">
+  <div *ngFor="let row of board" class="board-row">
+    <span *ngFor="let token of row" class="board-column">
+      <token-slot
+        (click)="dropToken(token)" 
+        [filled]="token.filled"
+        [player]="token.player"
+        [attr.disabled]="token.filled">
+      </token-slot>
+    </span>
+  </div>
+</div>

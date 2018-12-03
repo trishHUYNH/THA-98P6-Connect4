@@ -1,0 +1,11 @@
+<div>
+  <h1 mat-dialog-title>Hey there!</h1>
+  <div mat-dialog-content>
+    <p>Do you want to go first or let the computer go first?</p>
+
+  </div>
+  <div mat-dialog-actions>
+      <button mat-button (click)="userGoesFirst(true)">I'll go first!</button>
+      <button mat-button (click)="userGoesFirst(false)">I'll let the computer go first!</button>
+  </div>
+</div>

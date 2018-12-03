@@ -1,0 +1,11 @@
+<div>
+    <h1 mat-dialog-title>{{ data.result }}</h1>
+    <div mat-dialog-content>
+      <p>Do you want to play again?</p>
+  
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button (click)="playAgain(true)">Yes!</button>
+        <button mat-button (click)="playAgain(false)">No!</button>
+    </div>
+  </div>

@@ -1,0 +1,15 @@
+.main-board {
+    border: 1px solid grey;
+    border-radius: 25px;
+    display: inline-block;
+}
+
+.board-row {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.board-column {
+    padding-left: 5px;
+    padding-right: 5px;
+}
