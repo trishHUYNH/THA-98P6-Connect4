@@ -149,13 +149,15 @@ export class BoardComponent implements OnInit {
   /**
    * Calls service to retrieve next move
    * Goes through board bottoms up to find next spot
-   * in board that is available
+   * in board that is available.
    */
   dropTokenComputer() {
     this.dtMovesService.getNextMove(this.movesList)
       .subscribe((moves: number[]) => {
         let lastMove = moves[moves.length - 1];
 
+        // If user selects slot above an empty slot, 
+        // this searches from bottom up for the next open slot
         for (let i = this.board.length - 1; i >= 0; i--) {
           if (!this.board[i][lastMove].filled) {
             this.board[i][lastMove].filled = true;
