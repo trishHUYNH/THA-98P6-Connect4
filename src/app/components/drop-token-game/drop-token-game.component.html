@@ -1,6 +1,8 @@
 <div>
+  <div><p>{{ gameMessage }}</p></div>
   <board
     *ngIf="playerOne != null"
-    [playerOne]="playerOne">
+    [playerOne]="playerOne"
+    (updateGameMessage)="onUpdateGameMessage($event)">
   </board>
 </div>

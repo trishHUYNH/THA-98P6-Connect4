@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DtMovesService } from '../../services/dt-moves.service';
 import { Board } from '../../models/board.model';
 import { GameResultsComponent } from '../../dialogs/game-results/game-results.component';
@@ -20,6 +20,8 @@ export class BoardComponent implements OnInit {
   movesList: number[]
   // True if user wanted to go first, else false if computer goes first
   @Input() playerOne: boolean;
+
+  @Output() updateGameMessage = new EventEmitter<string>();
 
   constructor(private dtMovesService: DtMovesService, private dialog: MatDialog) {
 
@@ -55,7 +57,10 @@ export class BoardComponent implements OnInit {
   */
   playerChoice() {
     if (!this.playerOne) {
+      this.updateGameMessage.emit("Computer will go first. Your token color is red.");
       this.dropTokenComputer();
+    } else {
+      this.updateGameMessage.emit("Make your move. Your token color is red.");
     }
   }
 
@@ -67,24 +72,28 @@ export class BoardComponent implements OnInit {
   checkWinner() {
     if (this.totalMoves == 16) {
       // tie
+      this.updateGameMessage.emit("Game is tied!");
       this.openResultsModal("Game is tied!");
     } else {
       let results = this.dtMovesService.checkWinner(this.board);
-      console.log(results);
       if (results.win) {
         if (results.player == 1) {
+          this.updateGameMessage.emit("You win!");
           this.openResultsModal("You win!");
         } else if (results.player == 2) {
+          this.updateGameMessage.emit("You lose!");
           this.openResultsModal("You lose!");
         }
       } else if (!results.win) {
         // No win, get next move from API call
         if (this.playerOne) {
           // User just went, computer goes now
+          this.updateGameMessage.emit("Computer is making a move...");
           this.playerOne = false;
           this.dropTokenComputer();
         } else if (!this.playerOne) {
           // Computer lost, user goes now
+          this.updateGameMessage.emit("Make your move.");
           this.playerOne = true;
         }
 
@@ -146,7 +155,6 @@ export class BoardComponent implements OnInit {
     this.dtMovesService.getNextMove(this.movesList)
       .subscribe((moves: number[]) => {
         let lastMove = moves[moves.length - 1];
-        console.log("Computer move: " + lastMove);
 
         for (let i = this.board.length - 1; i >= 0; i--) {
           if (!this.board[i][lastMove].filled) {
@@ -170,10 +178,18 @@ export class BoardComponent implements OnInit {
   dropToken(token: Board) {
 
     if (token.filled) {
-      console.log("Spot already taken!");
+      this.updateGameMessage.emit("Spot already taken. Please, choose a different move.");
     } else {
-      token.filled = true;
-      token.player = 1;
+
+      for (let i = this.board.length - 1; i >= 0; i--) {
+        if (!this.board[i][token.column].filled) {
+          this.board[i][token.column].filled = true;
+          this.board[i][token.column].player = 1;
+          break;
+        }
+      }
+      // token.filled = true;
+      // token.player = 1;
       this.movesList.push(token.column);
       this.totalMoves++;
       this.checkWinner();

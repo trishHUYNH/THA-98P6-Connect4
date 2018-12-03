@@ -13,6 +13,8 @@ export class DropTokenGameComponent implements OnInit {
 
   playerOne: boolean;
 
+  gameMessage: string;
+
   constructor(private dialog: MatDialog) {
     this.openPlayerChoiceDialog()
    }
@@ -37,5 +39,13 @@ export class DropTokenGameComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       this.playerOne = result;
     });
+  }
+
+  /**
+   * Respond to child event to update message displayed to user
+   * @param message 
+   */
+  onUpdateGameMessage(message: string) {
+    this.gameMessage = message;
   }
 }

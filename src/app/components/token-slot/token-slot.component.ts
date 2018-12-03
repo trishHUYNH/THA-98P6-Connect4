@@ -20,9 +20,9 @@ export class TokenSlotComponent implements OnInit {
 
   setFillColor() {
     if (this.filled && this.player == 1) {
-      return {'background-color': 'red'};
+      return {'background-color': '#ea4d4d'};
     } else if (this.filled && this.player == 2) {
-      return {'background-color': 'blue'};
+      return {'background-color': '#2b7cff'};
     }
   }
 
